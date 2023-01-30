@@ -1,0 +1,2 @@
+Requires `~/.aws/credentials` be set up with a profile named `email-admin`.
+Requires access to S3 backend for storing Terraform
