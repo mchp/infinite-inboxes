@@ -1,29 +1,29 @@
 variable "ruleset_name" {
-    type = string
-    default = "household"
+  type    = string
+  default = "household"
 }
 
 variable "inboxes" {
-  type = list(string)
+  type    = list(string)
   default = ["jonathan", "maria"]
 }
 
 variable "domain" {
-  type = string
+  type    = string
   default = "mariapiao.com"
 }
 
 variable "s3_bucket_name" {
-  type = string
+  type    = string
   default = "mariapiao.com"
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "us-west-2"
 }
 
 variable "aws_profile" {
-  type = string
+  type    = string
   default = "email-admin"
 }

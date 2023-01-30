@@ -60,37 +60,37 @@ resource "aws_s3_bucket_policy" "allow_ses_put" {
 resource "aws_ses_receipt_rule" "inboxes" {
   for_each = toset(var.inboxes)
 
-  name = each.key
+  name          = each.key
   rule_set_name = aws_ses_receipt_rule_set.this.id
-  recipients = ["${each.key}@${var.domain}"]
-  enabled = true
-  scan_enabled = true
+  recipients    = ["${each.key}@${var.domain}"]
+  enabled       = true
+  scan_enabled  = true
 
   s3_action {
-    bucket_name = aws_s3_bucket.storage.id
+    bucket_name       = aws_s3_bucket.storage.id
     object_key_prefix = "mail/${each.key}"
-    position = 1
+    position          = 1
   }
 
   stop_action {
-    scope = "RuleSet"
+    scope    = "RuleSet"
     position = 2
   }
 }
 
 resource "aws_ses_receipt_rule" "fallback" {
-  name = "unknown"
+  name          = "unknown"
   rule_set_name = aws_ses_receipt_rule_set.this.id
-  recipients = ["${var.domain}"]
-  enabled = true
-  scan_enabled = true
+  recipients    = ["${var.domain}"]
+  enabled       = true
+  scan_enabled  = true
   // The ordering for rules within a ruleset is newest one take priority
   // By setting the fallback as "after" the first inbox, it will be executed last
   after = aws_ses_receipt_rule.inboxes[var.inboxes[0]].id
   s3_action {
-    bucket_name = aws_s3_bucket.storage.id
+    bucket_name       = aws_s3_bucket.storage.id
     object_key_prefix = "mail/unknown"
-    position = 1
+    position          = 1
   }
 }
 
@@ -120,9 +120,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "mchp-terraform-state"
-    key = "infinite-inboxes-ses/tfstate"
-    region = "us-west-2"
+    bucket  = "mchp-terraform-state"
+    key     = "infinite-inboxes-ses/tfstate"
+    region  = "us-west-2"
     profile = "email-admin"
   }
 }
